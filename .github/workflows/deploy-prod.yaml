@@ -1,4 +1,4 @@
-name: Deploy Dime Loans Backend Live Service
+name: Deploy PlayKe Backend Live Service
 
 on:
   workflow_dispatch:
