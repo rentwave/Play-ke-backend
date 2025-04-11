@@ -27,7 +27,13 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
+CSRF_ALLOWED_HOSTS = ["*"]
 
+CSRF_TRUSTED_ORIGINS = [
+	'https://play-backend.254.radio',
+	'https://play-inc.254.radio',
+	'https://www.play-inc.254.radio',
+]
 # Application definition
 
 INSTALLED_APPS = [
