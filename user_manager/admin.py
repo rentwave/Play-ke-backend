@@ -6,7 +6,7 @@ from user_manager.models import CustomUser, UserWallet, Identity
 @admin.register(CustomUser)
 class CustomUserAdmin(admin.ModelAdmin):
     """Admin Custom User"""
-    list_display = ('name', 'bio', 'phone_number', 'date_created', 'email', 'full_name')
+    list_display = ('name', 'bio', 'phone_number', 'created_at', 'email', 'full_name')
     search_fields = ('name',)
 
 
