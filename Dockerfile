@@ -16,6 +16,6 @@ COPY . .
 
 RUN apt remove -y --purge gcc g++ && apt autoremove -y
 
-RUN mkdir -p /var/www/dime-loans
+RUN mkdir -p /var/www/playke
 
-CMD ["./run.sh", "./run2.sh"]
+CMD ["./run.sh"]

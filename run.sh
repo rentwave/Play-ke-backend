@@ -1,9 +1,9 @@
 #!/bin/bash
 
 python manage.py collectstatic --no-input
-PORT=8001
+PORT=8015
 exec gunicorn \
     --bind 0.0.0.0:$PORT \
     --access-logfile - \
     --timeout 300 \
-    dime_loans.wsgi:application -w 2
+    playke.wsgi:application -w 2

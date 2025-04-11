@@ -57,7 +57,7 @@ jobs:
           key: ${{ secrets.MVPM_PASSWORD_SSH_KEY }}
           script_stop: true
           script: |
-            cd /srv/apps/live/play-ke-backend
+            cd /srv/apps/live/Play-ke-backend
             git stash
             git pull origin master
             LATEST_TAG=${{ env.docker_tag }}
