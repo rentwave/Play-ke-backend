@@ -72,7 +72,7 @@ class UserManagement(object):
 			password = kwargs.get("password")
 			if not password:
 				return JsonResponse({"status": "failed", "message": "Missing password"})
-			user = CustomUser.objects.get(phone_number=phone_number)
+			user = CustomUser.objects.filter(phone_number=phone_number).exists()
 			if user:
 				return JsonResponse({"status": "failed", "message": "User already exists"})
 			user = CustomUser.objects.create(
