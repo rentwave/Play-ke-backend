@@ -23,9 +23,6 @@ def get_request_data(request):
 			request_method = getattr(request, 'method', None)
 			if request_meta.get('CONTENT_TYPE', '') == 'application/json':
 				data = json.loads(request.body)
-			elif str(request_meta.get('CONTENT_TYPE', '')).startswith('multipart/form-data;'):  # Special handling for
-				# Form Data?
-				data = data.dict()
 			elif request_method == 'GET':
 				data = request.GET.copy()
 				data = data.dict()
