@@ -1,4 +1,6 @@
 from django.urls import re_path
+from django.views.decorators.csrf import csrf_exempt
+
 from user_manager.models import CustomUser, UserWallet
 from django.db.models import Q
 from django.http import JsonResponse
@@ -11,7 +13,7 @@ class UserManagement(object):
     def __init__(self):
         pass
 
-
+    @csrf_exempt
     def create_user(self, **kwargs):
         """
         This method creates a user with the given kwargs.
@@ -57,6 +59,7 @@ class UserManagement(object):
             pass  # lgr.exception('%s Service create exception: %s' % (self.manager.model.__name__, e))
         return JsonResponse({"code": "500.001.012", "status": "failed", "context": "Failed creating user"})
 
+    @csrf_exempt
     def authenticate_user(self, **kwargs):
         """
         This method authenticates the user with the given kwargs.
