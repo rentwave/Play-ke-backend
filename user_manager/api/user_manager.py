@@ -33,7 +33,6 @@ class UserManagement(object):
             password = kwargs.get("password")
             if not password:
                 return JsonResponse({"status": "failed", "message": "Missing password"})
-            # Create user first
             user = CustomUser.objects.get(phone_number=phone_number)
             if user:
                 return JsonResponse({"status": "failed", "message": "User already exists"})
@@ -82,6 +81,6 @@ class UserManagement(object):
 
 
 urlpatterns = [
-    re_path(r'^onboard/$', UserManagement.create_user),
-    re_path(r'^authenticate/$', UserManagement.authenticate_user),
+    re_path(r'^onboard/$', UserManagement().create_user),
+    re_path(r'^authenticate/$', UserManagement().authenticate_user),
 ]

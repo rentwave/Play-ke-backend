@@ -21,7 +21,6 @@ class CustomUser(AbstractBaseUser, BaseModel):
         verbose_name = 'User'
         verbose_name_plural = 'Users'
 
-    # Add any additional fields you want here
 
 class UserWallet(BaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
