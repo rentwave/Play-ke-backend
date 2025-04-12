@@ -94,7 +94,7 @@ class UserManagement(object):
 			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User created successfully"})
 		except Exception as e:
 			print('Service create exception: %s' % e)
-			return JsonResponse({"code": "500.001.012", "status": "failed", "context": "Failed creating user"})
+			return JsonResponse({"code": "500.001.012", "status": "failed", "context": str(e)})
 	
 	@csrf_exempt
 	def authenticate_user(self, **kwargs):
