@@ -12,6 +12,7 @@ class CustomUser(AbstractBaseUser, BaseModel):
     """
     bio = models.TextField(max_length=500, blank=True, null=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
+    user_name = models.CharField(max_length=255, blank=True, null=True)
     full_name = models.CharField(max_length=255, blank=True, null=True)
     email = models.EmailField(max_length=255, unique=True, blank=True, null=True)
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
