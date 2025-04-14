@@ -14,5 +14,5 @@ class CustomUserAdmin(admin.ModelAdmin):
 class UserWalletAdmin(admin.ModelAdmin):
     """Admin Custom User"""
     list_display = ('user', 'balance', 'account_number', 'wallet_currency', 'state', )
-    search_fields = ('name', 'user__name')
+    search_fields = ('name', 'user__full_name')
 
