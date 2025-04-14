@@ -24,6 +24,8 @@ class UserManagement(object):
 		:return: Created object or None on error.
 		"""
 		try:
+			print("Request")
+			print(request)
 			request_data = get_request_data(request)
 			kwargs = request_data.get('data', {})
 			full_name = kwargs.get("full_name")
