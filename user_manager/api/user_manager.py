@@ -24,8 +24,6 @@ class UserManagement(object):
 		:return: Created object or None on error.
 		"""
 		try:
-			print("Request")
-			print(request)
 			request_data = get_request_data(request)
 			kwargs = request_data.get('data', {})
 			full_name = kwargs.get("full_name")
@@ -50,28 +48,21 @@ class UserManagement(object):
 				return JsonResponse({"status": "failed", "message": "Failed creating user"})
 			# Set user password
 			user.set_password(password)
-			# Create user wallet
-			# user_wallet = UserWallet.objects.get(user=user)
-			# if user_wallet:
-			# 	return JsonResponse({"status": "failed", "message": "User wallet already exists"})
-			# user_wallet = UserWallet.objects.create(
-			# 	user=user, wallet_balance=0.0, wallet_currency="KES", account_number=phone_number
-			# )
-			# if not user_wallet:
-			# 	return JsonResponse({"status": "failed", "message": "Failed creating user wallet"})
 			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User created successfully"})
 		except Exception as e:
 			print('Service create exception: %s' % e)
 			return JsonResponse({"code": "500.001.012", "status": "failed", "context": str(e)})
 	
 	@csrf_exempt
-	def authenticate_user(self, **kwargs):
+	def authenticate_user(self, request):
 		"""
 		This method authenticates the user with the given kwargs.
 		:param kwargs: key=>value methods to pass to the create method.
 		:return: Created object or None on error.
 		"""
 		try:
+			request_data = get_request_data(request)
+			kwargs = request_data.get('data', {})
 			phone_number = kwargs.get("phone_number", "")
 			email = kwargs.get("email", "")
 			password = kwargs.get("password")
