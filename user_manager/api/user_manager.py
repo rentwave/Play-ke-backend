@@ -83,14 +83,14 @@ class UserManagement(object):
 			# Set user password
 			user.set_password(password)
 			# Create user wallet
-			# user_wallet = UserWallet.objects.get(user=user)
-			# if user_wallet:
-			# 	return JsonResponse({"status": "failed", "message": "User wallet already exists"})
-			# user_wallet = UserWallet.objects.create(
-			# 	user=user, wallet_balance=0.0, wallet_currency="KES", account_number=phone_number
-			# )
-			# if not user_wallet:
-			# 	return JsonResponse({"status": "failed", "message": "Failed creating user wallet"})
+			user_wallet = UserWallet.objects.get(user=user)
+			if user_wallet:
+				return JsonResponse({"status": "failed", "message": "User wallet already exists"})
+			user_wallet = UserWallet.objects.create(
+				user=user, wallet_balance=0.0, wallet_currency="KES", account_number=phone_number
+			)
+			if not user_wallet:
+				return JsonResponse({"status": "failed", "message": "Failed creating user wallet"})
 			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User created successfully"})
 		except Exception as e:
 			print('Service create exception: %s' % e)

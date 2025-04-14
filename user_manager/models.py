@@ -1,7 +1,5 @@
 from django.db import models
-
 # Create your models here.
-
 from django.contrib.auth.models import AbstractBaseUser
 from base.models import BaseModel, Country, State
 
@@ -20,6 +18,9 @@ class CustomUser(AbstractBaseUser, BaseModel):
 
     USERNAME_FIELD = 'user_name'
 
+    def __str__(self):
+        return '%s' % self.full_name
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
@@ -32,9 +33,15 @@ class UserWallet(BaseModel):
     wallet_currency = models.CharField(max_length=20, blank=True, null=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
 
+    def __str__(self):
+        return '%s' % self.balance
+
 
 class Identity(BaseModel):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE, null=True, blank=True)
     source_ip = models.CharField(max_length=20, blank=True, null=True)
     expiry = models.DateField(null=True, blank=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
+
+    def __str__(self):
+        return '%s' % self.source_ip
