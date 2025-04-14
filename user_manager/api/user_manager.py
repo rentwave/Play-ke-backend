@@ -51,7 +51,7 @@ class UserManagement(object):
 			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User created successfully"})
 		except Exception as e:
 			print('Service create exception: %s' % e)
-			return JsonResponse({"code": "500.001.012", "status": "failed", "context": str(e)})
+		return JsonResponse({"code": "500.001.012", "status": "failed", "context": str(e)})
 	
 	@csrf_exempt
 	def authenticate_user(self, request):
@@ -67,16 +67,17 @@ class UserManagement(object):
 			email = kwargs.get("email", "")
 			password = kwargs.get("password")
 			if not password:
-				return {"status": "failed", "message": "Missing password"}
+				return JsonResponse({"status": "failed", "message": "Missing password"})
 			# Authenticate user
 			user = CustomUser.objects.get(Q(phone_number=phone_number) | Q(email=email))
 			if not user:
-				return {"status": "failed", "message": "User does not exist"}
+				return JsonResponse({"status": "failed", "message": "User does not exist"})
 			if not user.check_password(password):
-				return {"status": "failed", "message": "Invalid password"}
-			return {"code": "100.000.000", "status": "success", "context": "User authenticated successfully"}
-		except Exception as e:
-			pass
+				return JsonResponse({"status": "failed", "message": "Invalid password"})
+			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User authenticated successfully"})
+		except Exception as ex:
+			print("Error authenticating user due to %s" % ex)
+		return JsonResponse({"code": "500.000.001", "message": "Error authenticating user"})
 
 
 urlpatterns = [
