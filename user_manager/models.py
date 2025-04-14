@@ -18,6 +18,8 @@ class CustomUser(AbstractBaseUser, BaseModel):
     country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True)
     state = models.ForeignKey(State, on_delete=models.CASCADE, null=True, blank=True)
 
+    USERNAME_FIELD = 'user_name'
+
     class Meta:
         verbose_name = 'User'
         verbose_name_plural = 'Users'
