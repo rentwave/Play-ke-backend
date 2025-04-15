@@ -27,9 +27,15 @@ DEBUG = True
 
 ALLOWED_HOSTS = ["*"]
 
-CSRF_ALLOWED_HOSTS = ["*"]
+CSRF_ALLOWED_HOSTS = ['https://play-backend.254.radio',
+	'https://play-inc.254.radio',
+	'https://www.play-inc.254.radio',]
 
-CSRF_TRUSTED_ORIGINS = ["*"]
+CSRF_TRUSTED_ORIGINS = [
+	'https://play-backend.254.radio',
+	'https://play-inc.254.radio',
+	'https://www.play-inc.254.radio',
+]
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
 
