@@ -29,11 +29,7 @@ ALLOWED_HOSTS = ["*"]
 
 CSRF_ALLOWED_HOSTS = ["*"]
 
-CSRF_TRUSTED_ORIGINS = [
-	'https://play-backend.254.radio',
-	'https://play-inc.254.radio',
-	'https://www.play-inc.254.radio',
-]
+CSRF_TRUSTED_ORIGINS = ["*"]
 # Application definition
 CORS_ALLOW_ALL_ORIGINS = True
 
@@ -94,6 +90,13 @@ DATABASES = {
 		'PORT': os.environ.get('POSTGRES_PORT'),
 	}
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 
