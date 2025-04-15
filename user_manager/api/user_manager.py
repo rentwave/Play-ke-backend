@@ -42,12 +42,12 @@ class UserManagement(object):
 			if user:
 				return JsonResponse({"status": "failed", "message": "User already exists"})
 			user = CustomUser.objects.create(
-				full_name=full_name, email=email, phone_number=phone_number, password=password
-			)
+				full_name=full_name, email=email, phone_number=phone_number)
 			if not user:
 				return JsonResponse({"status": "failed", "message": "Failed creating user"})
 			# Set user password
 			user.set_password(password)
+			user.save()
 			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User created successfully"})
 		except Exception as e:
 			print('Service create exception: %s' % e)
