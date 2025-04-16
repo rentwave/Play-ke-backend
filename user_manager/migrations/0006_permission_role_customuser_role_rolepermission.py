@@ -8,7 +8,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('base', '0004_state_name'),
+        # ('base', '0004_state_name'),
         ('user_manager', '0005_remove_customuser_name_remove_identity_name_and_more'),
     ]
 
