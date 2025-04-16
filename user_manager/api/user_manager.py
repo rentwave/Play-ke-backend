@@ -2,6 +2,7 @@ import json
 from django.urls import re_path
 from django.views.decorators.csrf import csrf_exempt
 from common.utils import get_request_data
+from user_manager.backend.services import RoleService
 from user_manager.models import CustomUser, UserWallet
 from django.db.models import Q
 from django.http import JsonResponse, QueryDict
@@ -42,7 +43,7 @@ class UserManagement(object):
 			if user:
 				return JsonResponse({"status": "failed", "message": "User already exists"})
 			user = CustomUser.objects.create(
-				full_name=full_name, email=email, phone_number=phone_number)
+				full_name=full_name, email=email, phone_number=phone_number, role=RoleService().get(name="Creator"))
 			if not user:
 				return JsonResponse({"status": "failed", "message": "Failed creating user"})
 			# Set user password
@@ -72,9 +73,10 @@ class UserManagement(object):
 			user = CustomUser.objects.get(Q(phone_number=phone_number) | Q(email=email))
 			if not user:
 				return JsonResponse({"status": "failed", "message": "User does not exist"})
+			user_data = {"phone_number": user.phone_number, "email": user.email, "full_name": user.full_name, "role": user.role.name}
 			if not user.check_password(password):
 				return JsonResponse({"status": "failed", "message": "Invalid password"})
-			return JsonResponse({"code": "100.000.000", "status": "success", "context": "User authenticated successfully"})
+			return JsonResponse({"code": "100.000.000", "status": "success", "user_data": user_data})
 		except Exception as ex:
 			print("Error authenticating user due to %s" % ex)
 		return JsonResponse({"code": "500.000.001", "message": "Error authenticating user"})
