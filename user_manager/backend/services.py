@@ -8,3 +8,9 @@ class IdentityService(ServiceBase):
     """
     manager = Identity.objects
 
+class RoleService(ServiceBase):
+    """
+    Service class for Identity Model
+    """
+    manager = Role.objects
+
