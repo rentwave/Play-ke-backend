@@ -3,7 +3,7 @@ version: '3.8'
 services:
   app:
     container_name: play_ke
-    image: osiru/dime_loans:${BACKEND_TAG}
+    image: osiru/play_ke:${BACKEND_TAG}
     working_dir: /usr/src/app
     ports:
       - "8015:8015"

@@ -45,7 +45,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: osiru/dime_loans:${{ env.docker_tag }}
+          tags: osiru/play_ke:${{ env.docker_tag }}
           platforms: linux/amd64,linux/arm64/v8
 
       - name: Run deployment commands
