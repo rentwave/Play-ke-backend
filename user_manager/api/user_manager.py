@@ -25,9 +25,9 @@ class UserManagement(object):
 		:return: Created object or None on error.
 		"""
 		try:
-			request_data = get_request_data(request)
-			print(request_data)
-			kwargs = request_data.get('data', {})
+			kwargs = get_request_data(request)
+			print(kwargs)
+			# kwargs = request_data.get('data', {})
 			full_name = kwargs.get("full_name")
 			if not full_name:
 				return JsonResponse({"status": "failed", "message": "Missing full name"})
@@ -63,8 +63,8 @@ class UserManagement(object):
 		:return: Created object or None on error.
 		"""
 		try:
-			request_data = get_request_data(request)
-			kwargs = request_data.get('data', {})
+			kwargs = get_request_data(request)
+			# kwargs = request_data.get('data', {})
 			phone_number = kwargs.get("phone_number", "")
 			email = kwargs.get("email", "")
 			password = kwargs.get("password")
