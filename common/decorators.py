@@ -12,6 +12,7 @@ def auth_required(view_func):
     def _wrapped_view(*args, **kwargs):
         request = None
         for k in args:
+            print("args", k)
             if isinstance(k, WSGIRequest):
                 request = k
                 break
