@@ -26,6 +26,7 @@ class UserManagement(object):
 		"""
 		try:
 			request_data = get_request_data(request)
+			print(request_data)
 			kwargs = request_data.get('data', {})
 			full_name = kwargs.get("full_name")
 			if not full_name:
