@@ -59,6 +59,7 @@ class UserManagement(object):
 		return JsonResponse({"code": "500.001.012", "status": "failed"})
 	
 	@csrf_exempt
+	@auth_required
 	def authenticate_user(self, request):
 		"""
 		This method authenticates the user with the given kwargs.
@@ -67,6 +68,7 @@ class UserManagement(object):
 		"""
 		try:
 			kwargs = get_request_data(request)
+			print(kwargs)
 			# kwargs = request_data.get('data', {})
 			phone_number = kwargs.get("phone_number", "")
 			email = kwargs.get("email", "")

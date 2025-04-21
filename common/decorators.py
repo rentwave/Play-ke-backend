@@ -7,7 +7,7 @@ def auth_required(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
         auth_header = request.META.get('HTTP_AUTHORIZATION', '')
-        print(auth_header)
+        print("Auth Header : -",auth_header)
         if not auth_header.startswith("Bearer "):
             return JsonResponse({'error': 'Missing or invalid Authorization header. Use: /auth/token/'}, status=401)
         token = auth_header[len("Bearer "):]
