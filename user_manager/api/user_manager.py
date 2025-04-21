@@ -1,6 +1,8 @@
 import json
 from django.urls import re_path
 from django.views.decorators.csrf import csrf_exempt
+
+from common.decorators import auth_required
 from common.utils import get_request_data
 from user_manager.backend.services import RoleService
 from user_manager.models import CustomUser, UserWallet
@@ -16,6 +18,7 @@ class UserManagement(object):
 		pass
 	
 	@csrf_exempt
+	@auth_required
 	def create_user(self, request):
 		"""
 		This method creates a user with the given kwargs.
@@ -56,6 +59,7 @@ class UserManagement(object):
 		return JsonResponse({"code": "500.001.012", "status": "failed"})
 	
 	@csrf_exempt
+	@auth_required
 	def authenticate_user(self, request):
 		"""
 		This method authenticates the user with the given kwargs.
@@ -70,7 +74,6 @@ class UserManagement(object):
 			password = kwargs.get("password")
 			if not password:
 				return JsonResponse({"status": "failed", "message": "Missing password"})
-			# Authenticate user
 			user = CustomUser.objects.get(Q(phone_number=phone_number) | Q(email=email))
 			if not user:
 				return JsonResponse({"status": "failed", "message": "User does not exist"})

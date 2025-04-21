@@ -1,4 +1,7 @@
 import json
+from datetime import datetime, date, timedelta
+from decimal import Decimal
+
 from django.http import QueryDict
 
 
@@ -33,3 +36,28 @@ def get_request_data(request):
 	except Exception as e:
 		print('get_request_data Exception: %s', e)
 	return QueryDict()
+
+
+def json_super_serializer(obj):
+	"""
+	Automatic serializer for objects not serializable by default by the JSON serializer.
+	Includes datetime, date, Decimal
+	@param obj: The object to convert.
+	@return: String of the data converted.
+	@rtype: str
+	"""
+	if isinstance(obj, datetime):
+		try:
+			return obj.strftime('%d/%m/%Y %I:%M:%S %p')
+		except Exception:
+			return str(obj)
+	elif isinstance(obj, date):
+		try:
+			return obj.strftime('%d/%m/%Y')
+		except Exception:
+			return str(obj)
+	elif isinstance(obj, (Decimal, float)):
+		return str("{:,}".format(round(Decimal(obj), 2)))
+	elif isinstance(obj, timedelta):
+		return obj.days
+	return str(obj)
