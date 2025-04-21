@@ -18,7 +18,6 @@ class UserManagement(object):
 		pass
 	
 	@csrf_exempt
-	@auth_required
 	def create_user(self, request):
 		"""
 		This method creates a user with the given kwargs.
@@ -59,7 +58,6 @@ class UserManagement(object):
 		return JsonResponse({"code": "500.001.012", "status": "failed"})
 	
 	@csrf_exempt
-	@auth_required
 	def authenticate_user(self, request):
 		"""
 		This method authenticates the user with the given kwargs.
