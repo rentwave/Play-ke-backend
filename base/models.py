@@ -49,24 +49,18 @@ class SystemClient(GenericBaseModel):
     access_token = models.CharField(max_length=255, null=True, blank=True)
     token_expiry = models.DateTimeField(null=True, blank=True)
     is_active = models.BooleanField(default=True)
-
-    consumer_secret_raw = None
-
-    def generate_random_key(self, length):
-        alphabet = string.ascii_letters + string.digits
-        return ''.join(random.choices(alphabet, k=length))
-
+    
     def regenerate_credentials(self):
-        self.consumer_key = self.generate_random_key(16)
-        raw_secret = self.generate_random_key(32)
+        alphabet = string.ascii_letters + string.digits
+        self.consumer_key = ''.join(random.choices(alphabet, k=16))
+        raw_secret = ''.join(random.choices(alphabet, k=32))
         self.consumer_secret_raw = raw_secret
         self.consumer_secret = raw_secret
+        self.save()
         return raw_secret
-
+    
     def save(self, *args, **kwargs):
-        if not self.pk and (not self.consumer_key or not self.consumer_secret):
+        if not self.consumer_key or not self.consumer_secret:
             self.regenerate_credentials()
         super().save(*args, **kwargs)
-
-
 
