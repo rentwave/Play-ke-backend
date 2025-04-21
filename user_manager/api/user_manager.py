@@ -84,17 +84,19 @@ class UserManagement(object):
 			print("Error authenticating user due to %s" % ex)
 		return JsonResponse({"code": "500.000.001", "message": "Error authenticating user"})
 
+user_mgmt = UserManagement()
+
 
 @csrf_exempt
 @auth_required
 def create_user_view(request):
-	return UserManagement().create_user(request)
+	return user_mgmt.create_user(request)
 
 
 @csrf_exempt
 @auth_required
 def authenticate_user_view(request):
-	return UserManagement().authenticate_user(request)
+	return user_mgmt.authenticate_user(request)
 
 
 urlpatterns = [
