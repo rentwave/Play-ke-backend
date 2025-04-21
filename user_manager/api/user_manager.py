@@ -74,7 +74,7 @@ class UserManagement(object):
 			user = CustomUser.objects.get(Q(phone_number=phone_number) | Q(email=email))
 			if not user:
 				return JsonResponse({"status": "failed", "message": "User does not exist"})
-			user_data = {"phone_number": user.phone_number, "email": user.email, "full_name": user.full_name, "role": user.role.name}
+			user_data = {"user_id": user.id,"phone_number": user.phone_number, "email": user.email, "full_name": user.full_name, "role": user.role.name}
 			if not user.check_password(password):
 				return JsonResponse({"status": "failed", "message": "Invalid password"})
 			return JsonResponse({"code": "100.000.000", "status": "success", "user_data": user_data})
