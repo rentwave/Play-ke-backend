@@ -3,34 +3,37 @@ from functools import wraps
 from django.http import JsonResponse
 from django.utils import timezone
 from base.models import SystemClient
+from common.utils import get_request_data
+from django.core.handlers.wsgi import WSGIRequest
+
+
 
 def auth_required(view_func):
     @wraps(view_func)
-    def _wrapped_view(request, *args, **kwargs):
+    def _wrapped_view(*args, **kwargs):
+        request = None
+        for k in args:
+            if isinstance(k, WSGIRequest):
+                request = k
+                break
+        if not request:
+            return JsonResponse({'error': 'Request object not found.'}, status=500)
+        request_data = get_request_data(request)
+        token = request_data.get("token") or None
+        if not token:
+            auth_header = request.headers.get("Authorization", "")
+            if auth_header.startswith("Bearer "):
+                token = auth_header[len("Bearer "):]
+        if not token:
+            return JsonResponse({'error': 'Missing Authorization token.'}, status=401)
         try:
-            token = None
-            if request.content_type == 'application/json':
-                try:
-                    data = json.loads(request.body.decode('utf-8'))
-                    token = data.get('token')
-                except json.JSONDecodeError:
-                    return JsonResponse({'error': 'Invalid JSON format.'}, status=400)
-            elif request.content_type.startswith('multipart/form-data') or request.content_type == 'application/x-www-form-urlencoded':
-                token = request.POST.get('token')
-            if not token:
-                return JsonResponse({'error': 'Missing token in request body.'}, status=401)
-            try:
-                client = SystemClient.objects.get(access_token=token, is_active=True)
-            except SystemClient.DoesNotExist:
-                return JsonResponse({'error': 'Invalid or expired token.'}, status=401)
-
-            if client.token_expiry < timezone.now():
-                client.is_active = False
-                client.save()
-                return JsonResponse({'error': 'Token expired.'}, status=401)
-            request.client = client
-            return view_func(request, *args, **kwargs)
-        except Exception as e:
-            return JsonResponse({'error': f'Auth failure: {str(e)}'}, status=500)
-
+            client = SystemClient.objects.get(access_token=token, is_active=True)
+        except SystemClient.DoesNotExist:
+            return JsonResponse({'error': 'Invalid or expired token. Use: /auth/token/'}, status=401)
+        if client.token_expiry < timezone.now():
+            client.is_active = False
+            client.save()
+            return JsonResponse({'error': 'Token expired. Use: /auth/token/'}, status=401)
+        request.system_client = client
+        return view_func(*args, **kwargs)
     return _wrapped_view
