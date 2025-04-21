@@ -10,6 +10,7 @@ from django.db.models import Q
 from django.http import JsonResponse, QueryDict
 
 
+
 class UserManagement(object):
 	"""This method is responsible for creation, update and deletion of user registration"""
 	
@@ -17,6 +18,7 @@ class UserManagement(object):
 		pass
 	
 	@csrf_exempt
+	@auth_required
 	def create_user(self, request):
 		"""
 		This method creates a user with the given kwargs.
@@ -57,7 +59,6 @@ class UserManagement(object):
 		return JsonResponse({"code": "500.001.012", "status": "failed"})
 	
 	@csrf_exempt
-	@auth_required
 	def authenticate_user(self, request):
 		"""
 		This method authenticates the user with the given kwargs.
@@ -72,11 +73,11 @@ class UserManagement(object):
 			password = kwargs.get("password")
 			if not password:
 				return JsonResponse({"status": "failed", "message": "Missing password"})
+			# Authenticate user
 			user = CustomUser.objects.get(Q(phone_number=phone_number) | Q(email=email))
 			if not user:
 				return JsonResponse({"status": "failed", "message": "User does not exist"})
-			user_data = {"user_id": user.id, "phone_number": user.phone_number, "email": user.email,
-			             "full_name": user.full_name, "role": user.role.name}
+			user_data = {"user_id": user.id,"phone_number": user.phone_number, "email": user.email, "full_name": user.full_name, "role": user.role.name}
 			if not user.check_password(password):
 				return JsonResponse({"status": "failed", "message": "Invalid password"})
 			return JsonResponse({"code": "100.000.000", "status": "success", "user_data": user_data})
@@ -84,22 +85,8 @@ class UserManagement(object):
 			print("Error authenticating user due to %s" % ex)
 		return JsonResponse({"code": "500.000.001", "message": "Error authenticating user"})
 
-user_mgmt = UserManagement()
-
-
-@csrf_exempt
-@auth_required
-def create_user_view(request):
-	return user_mgmt.create_user(request)
-
-
-@csrf_exempt
-@auth_required
-def authenticate_user_view(request):
-	return user_mgmt.authenticate_user(request)
-
 
 urlpatterns = [
-	re_path(r'^onboard/$', create_user_view),
-	re_path(r'^authenticate/$', authenticate_user_view),
+	re_path(r'^onboard/$', UserManagement().create_user),
+	re_path(r'^authenticate/$', UserManagement().authenticate_user),
 ]
